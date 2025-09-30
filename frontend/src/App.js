@@ -3,25 +3,17 @@ import React, { useEffect, useState } from "react";
 function App() {
   const [message, setMessage] = useState("Loading...");
 
-  // useEffect(() => {
-  //   fetch("http://backend:5000/")   // use service name "backend"
-  //   // fetch("http://localhost:5000")
+  // ✅ Use environment variable from .env file
+  const backendURL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
-  //     .then((res) => res.text())
-  //     .then((data) => setMessage(data))
-  //     .catch((err) => setMessage("Error connecting to backend: " + err));
-  // }, []);
-  const backendURL = window.location.hostname === "localhost"
-  ? "http://localhost:5000"
-  : "http://backend:5000";
-
-useEffect(() => {
-  fetch(`${backendURL}/`)
-    .then(res => res.text())
-    .then(data => setMessage(data))
-    .catch(err => setMessage("Error connecting to backend: " + err));
-}, []);
-
+  useEffect(() => {
+    fetch(`${backendURL}/`)
+      .then((res) => res.text())
+      .then((data) => setMessage(data))
+      .catch((err) =>
+        setMessage("Error connecting to backend: " + err.message)
+      );
+  }, [backendURL]);
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
