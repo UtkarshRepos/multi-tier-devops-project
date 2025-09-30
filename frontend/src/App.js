@@ -4,7 +4,12 @@ function App() {
   const [message, setMessage] = useState("Loading...");
 
   // ✅ Use environment variable from .env file
-  const backendURL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  // const backendURL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  // frontend/src/App.js
+const backendURL = window.location.hostname === "localhost"
+  ? "http://localhost:5000"   // local dev
+  : "http://13.201.60.12:5000"; // EC2 public IP for production
+
 
   useEffect(() => {
     fetch(`${backendURL}/`)
