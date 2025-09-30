@@ -3,31 +3,15 @@ import React, { useEffect, useState } from "react";
 function App() {
   const [message, setMessage] = useState("Loading...");
 
-  // ✅ Use environment variable from .env file
-  // const backendURL = process.env.REACT_APP_API_URL || "http://localhost:5000";
-  // frontend/src/App.js
-// const backendURL = window.location.hostname === "localhost"
-//   ? "http://localhost:5000"   // local dev
-//   : "http://13.201.60.12:5000"; // EC2 public IP for production
+  // Use environment variable for backend URL, fallback to localhost if not set
+  const backendURL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
-
-//   useEffect(() => {
-//     fetch(`${backendURL}/`)
-//       .then((res) => res.text())
-//       .then((data) => setMessage(data))
-//       .catch((err) =>
-//         setMessage("Error connecting to backend: " + err.message)
-//       );
-//   }, [backendURL]);
-
-const backendURL = process.env.REACT_APP_BACKEND_URL;
-useEffect(() => {
-  fetch(`${backendURL}/`)
-    .then(res => res.text())
-    .then(data => setMessage(data))
-    .catch(err => setMessage("Error connecting to backend: " + err));
-}, []);
-
+  useEffect(() => {
+    fetch(`${backendURL}/`)
+      .then(res => res.text())
+      .then(data => setMessage(data))
+      .catch(err => setMessage("Error connecting to backend: " + err));
+  }, [backendURL]);  // add backendURL to dependency array
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>

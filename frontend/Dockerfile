@@ -1,40 +1,25 @@
-# # Build stage
-# FROM node:18 as build
-# WORKDIR /app
-
-# COPY package*.json ./
-# RUN npm install
-
-# COPY . .
-# RUN npm run build
-
-# # Serve with Nginx
-# FROM nginx:alpine
-# COPY --from=build /app/build /usr/share/nginx/html
-# EXPOSE 80
-# CMD ["nginx", "-g", "daemon off;"]
-
-# FROM node:18
-# WORKDIR /app
-
-# COPY package*.json ./
-# RUN npm install
-
-# COPY . .
-# EXPOSE 3000
-# CMD ["npm", "start", "--", "--host", "0.0.0.0"]
-
 # Build stage
 FROM node:18 as build
 WORKDIR /app
+
+# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
+
+# Copy the rest of the code
 COPY . .
+
+# Build the app with backend URL environment variable
+ARG REACT_APP_BACKEND_URL
+ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
 RUN npm run build
 
-# Serve with Nginx
+# Production stage with Nginx
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
+
+# Optional: copy custom Nginx config if needed
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
-
