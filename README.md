@@ -1,113 +1,104 @@
-🚀 Multi-Tier DevOps Project
-📖 Overview
+🚀 Multi-Tier DevOps Project – CI/CD with GitHub Actions, Docker & AWS EC2
+📌 Overview
 
-This project is a multi-tier web application deployed on AWS EC2 using Docker Compose and automated with GitHub Actions CI/CD.
-It demonstrates how to build, containerize, and deploy a full-stack app (React frontend, Node.js backend, PostgreSQL database) with monitoring, health checks, and automated deployments.
+This project demonstrates a multi-tier application deployment using DevOps practices.
+It includes:
 
-🏗️ Architecture
+Frontend (React)
 
-Frontend → React app served with Nginx
+Backend (Node.js/Express)
 
-Backend → Node.js + Express API
+Dockerized services
 
-Database → PostgreSQL
+Automated CI/CD pipeline with GitHub Actions
 
-Infrastructure → Docker Compose on EC2
+Deployment to AWS EC2
 
-CI/CD → GitHub Actions builds and deploys automatically on push
+The goal was to simulate a real-world DevOps workflow where every code push triggers build, test, and deployment steps automatically.
 
-Monitoring/Logging → Morgan logs + Docker healthchecks
+🛠️ Tech Stack
 
-graph TD
-    A[React Frontend] -->|API Calls| B[Node.js Backend]
-    B -->|Queries| C[(PostgreSQL DB)]
-    A -->|Served via Nginx| EC2[EC2 Instance]
-    B -->|Docker Healthcheck + Logs| Monitor[Monitoring/Logging]
+Frontend: React
 
-⚙️ Tech Stack
+Backend: Node.js / Express
 
-Frontend: React + Nginx
-
-Backend: Node.js, Express
-
-Database: PostgreSQL
+Containerization: Docker & Docker Hub
 
 CI/CD: GitHub Actions
 
-Infrastructure: Docker, Docker Compose, AWS EC2
+Cloud Deployment: AWS EC2 (Ubuntu)
 
-Monitoring: Docker healthchecks, Morgan logs
+⚙️ CI/CD Pipeline Flow
+
+Code Push (main branch)
+
+Triggers GitHub Actions workflow
+
+GitHub Actions
+
+Builds Docker images (frontend + backend)
+
+Pushes images to Docker Hub
+
+AWS EC2
+
+Pulls the latest Docker images
+
+Runs containers to serve frontend & backend
 
 📂 Project Structure
-multi-tier-devops-project/
-│── backend/          # Node.js + Express API
-│   ├── index.js
-│   ├── package.json
-│   └── Dockerfile
-│
-│── frontend/         # React frontend
-│   ├── src/App.js
-│   └── Dockerfile
-│
-│── docker-compose.yml
-│── .github/workflows/deploy.yml  # GitHub Actions CI/CD
+.github/workflows/        # CI/CD workflows (docker-ci-cd.yml)
+frontend/                 # React frontend code
+backend/                  # Node.js backend code
 
-🚀 Deployment Workflow
+🔑 Secrets Used in GitHub Actions
 
-Push code to GitHub
+DOCKER_USERNAME → Your Docker Hub username
 
-GitHub Actions builds Docker images
+DOCKER_PASSWORD → Your Docker Hub password/token
 
-Images deployed on AWS EC2 via Docker Compose
+🚀 How to Run Locally
+# Clone repo
+git clone https://github.com/<your-username>/<repo-name>.git
+cd <repo-name>
 
-Application served at http://<Elastic-IP>:3000
+# Run backend
+cd backend
+docker build -t backend-app .
+docker run -p 5000:5000 backend-app
 
-🔍 Health Checks & Logging
+# Run frontend
+cd ../frontend
+docker build -t frontend-app .
+docker run -p 3000:3000 frontend-app
 
-Healthchecks in docker-compose.yml ensure backend & frontend only start when dependencies are ready.
+✅ GitHub Actions successful run
 
-Morgan logs all backend API requests.
+✅ Docker Hub images (frontend + backend)
 
-Docker logging driver keeps logs rotated (max-size=10m, max-file=3).
+✅ Application running in browser (frontend + API check)
 
-📝 Setup Instructions
-🔧 Local Development
-git clone https://github.com/UtkarshRepos/multi-tier-devops-project.git
-cd multi-tier-devops-project
-docker compose up -d --build
+Example:
 
+📊 Architecture Diagram
+flowchart LR
+    A[Developer] -->|Push Code| B[GitHub Actions]
+    B -->|Build & Push| C[Docker Hub]
+    C -->|Pull Images| D[AWS EC2]
+    D -->|Run Containers| E[Frontend:3000]
+    D -->|Run Containers| F[Backend:5000]
 
-Frontend → http://localhost:3000
+🎯 Key Learnings
 
-Backend → http://localhost:5000
+Writing CI/CD pipelines with GitHub Actions
 
-🌐 EC2 Deployment
-# SSH into EC2
-ssh -i your-key.pem ec2-user@<Elastic-IP>
+Building & pushing Docker images automatically
 
-# Run project
-git clone https://github.com/UtkarshRepos/multi-tier-devops-project.git
-cd multi-tier-devops-project
-docker compose up -d --build
+Deploying multi-tier apps on AWS EC2
 
-✅ Features Implemented
+Managing secrets securely in GitHub
 
-Multi-tier architecture (frontend, backend, database)
+✅ Status
 
-CI/CD with GitHub Actions
-
-Dockerized deployment
-
-Health checks for services
-
-Centralized logging (json-file with rotation)
-
-Monitoring via Prometheus client (future-ready)
-
-📌 Next Steps / Future Improvements
-
-Add Prometheus + Grafana dashboards
-
-Add NGINX reverse proxy + SSL (HTTPS)
-
-Terraform/CloudFormation for full infra automation
+This project is completed 🎉.
+All workflows, Docker setup, and deployment steps have been tested successfully.
